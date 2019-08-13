@@ -1,0 +1,71 @@
+{% extends 'ecommerce/_base.html' %}
+{% load static %}
+
+{% block extraCSS %}
+  <!-- LINEARICONS -->
+  <link rel="stylesheet" href="{% static 'ecommerce/fonts/linearicons/authentication.css' %}">
+  <!-- STYLE CSS -->
+  <link rel="stylesheet" href="{% static 'ecommerce/css/authentication.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="wrapper">
+    <div class="inner">
+      <div onclick="location.href='index.html'" style="color:white;background:gray;line-height:3;text-align:center;cursor:pointer">Back to home</div>
+      <img src="{% static 'ecommerce/images/image-1.png' %}" alt="" class="image-1">
+      <form action="{% url 'buyer' %}" id="login" style="border-top:5px solid #99ccff;">
+        <h3>Login</h3>
+        <div class="form-holder">
+          <span class="lnr lnr-user"></span>
+          <input type="text" class="form-control" placeholder="Username">
+        </div>
+        <div class="form-holder">
+          <span class="lnr lnr-lock"></span>
+          <input type="password" class="form-control" placeholder="Password">
+        </div>
+        <button>
+          <span>Login</span>
+        </button>
+        <br/>
+        <a style="float:right;cursor:pointer;" onclick="document.getElementById('login').style.display='none';document.getElementById('registration').style.display='block';">Not registered?</a>
+      </form>
+      
+      <form action="{% url 'seller' %}" id="registration" style="display:none;border-top:5px solid #99ccff;">
+        <h3>New Account?</h3>
+        <div class="form-holder">
+          <span class="lnr lnr-user"></span>
+          <input type="text" class="form-control" placeholder="Username">
+        </div>
+        <div class="form-holder">
+          <span class="lnr lnr-phone-handset"></span>
+          <input type="text" class="form-control" placeholder="Phone Number">
+        </div>
+        <div class="form-holder">
+          <span class="lnr lnr-envelope"></span>
+          <input type="text" class="form-control" placeholder="Mail">
+        </div>
+        <div class="form-holder">
+          <span class="lnr lnr-lock"></span>
+          <input type="password" class="form-control" placeholder="Password">
+        </div>
+        <div class="form-holder">
+          <span class="lnr lnr-lock"></span>
+          <input type="password" class="form-control" placeholder="Confirm Password">
+        </div>
+        <button>
+          <span>Register</span>
+        </button>
+        <br/>
+        <a style="float:right;cursor:pointer;" onclick="document.getElementById('login').style.display='block';document.getElementById('registration').style.display='none';">Already registered?</a>
+      </form>
+      <img src="{% static 'ecommerce/images/image-2.png' %}" alt="" class="image-2">
+    </div>
+    
+  </div>
+{% endblock %}
+		
+{% block extraJS %}		
+  <script src="{% static 'ecommerce/js/jquery-3.3.1.min.js' %}"></script>
+  <script src="{% static 'ecommerce/js/authentication.js' %}"></script>
+{% endblock %}
+

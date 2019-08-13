@@ -1,0 +1,96 @@
+{% extends 'ecommerce/_base.html' %}
+{% load static %}
+
+{% block content %}
+  <!--Main layout-->
+  <main class="mt-5 pt-4">
+    <div class="container wow fadeIn">
+      <!--Grid row-->
+      <div class="row">
+
+        <!--Grid column-->
+        <div class="col-md-12 mb-4">
+
+          <!--Card-->
+          <div class="card">
+
+            <!--Card content-->
+            <form class="card-body" style="min-height:800px"> 
+                      
+              <ul class="nav nav-tabs md-tabs" id="myTabMD" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" id="home-tab-md" data-toggle="tab" href="#home-md" role="tab" aria-controls="home-md"
+                    aria-selected="true">Personal information</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="orders-tab-md" data-toggle="tab" href="#orders-md" role="tab" aria-controls="orders-md"
+                    aria-selected="false">Orders</a>
+                </li>
+              </ul>
+              <div class="tab-content card pt-5" id="myTabContentMD">
+                <div class="tab-pane fade show active" id="home-md" role="tabpanel" aria-labelledby="home-tab-md">
+                  <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua,
+                    retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica.
+                    Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry
+                    richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american
+                    apparel, butcher voluptate nisi qui.</p>
+                </div>
+                <div class="tab-pane fade" id="orders-md" role="tabpanel" aria-labelledby="orders-tab-md">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <!--Table head-->
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th class="th-lg">Name</th>
+                          <th class="th-lg">Quantity</th>
+                          <th class="th-lg">Unit price</th>
+                        </tr>
+                      </thead>
+                      <!--Table head-->
+                      <!--Table body-->
+                      <tbody>
+                        <tr>
+                          <th scope="row">1</th>
+                          <td>Lorem ipsum dolor</td>
+                          <td>Lorem ipsum dolor</td>
+                          <td>Lorem ipsum dolor</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">2</th>
+                          <td>Lorem ipsum dolor</td>
+                          <td>Lorem ipsum dolor</td>
+                          <td>Lorem ipsum dolor</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">3</th>
+                          <td>Lorem ipsum dolor</td>
+                          <td>Lorem ipsum dolor</td>
+                          <td>Lorem ipsum dolor</td>
+                        </tr>
+                        <tr>
+                          <th scope="row" colspan="2"></th>
+                          <th >Total price</th>
+                          <th>Lorem ipsum dolor</td>
+                        </tr>
+                      </tbody>
+                      <!--Table body-->
+                    </table>
+                  </div> 
+                </div>
+              </div> 
+            </form>
+
+          </div>
+          <!--/.Card-->
+
+        </div>
+        <!--Grid column-->
+
+
+      </div>
+      <!--Grid row-->
+
+    </div>
+  </main>
+{% endblock %}

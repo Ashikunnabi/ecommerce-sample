@@ -1,0 +1,172 @@
+{% extends 'ecommerce/_base.html' %}
+{% load static %}
+
+{% block content %}
+  <!--Carousel Wrapper-->
+  <div id="carousel-example-1z" class="carousel slide carousel-fade pt-4" data-ride="carousel">
+
+    <!--Indicators-->
+    <ol class="carousel-indicators">
+      <li data-target="#carousel-example-1z" data-slide-to="0" class="active"></li>
+      <li data-target="#carousel-example-1z" data-slide-to="1"></li>
+      <li data-target="#carousel-example-1z" data-slide-to="2"></li>
+    </ol>
+    <!--/.Indicators-->
+
+    <!--Slides-->
+    <div class="carousel-inner" role="listbox">
+
+      <!--First slide-->
+      <div class="carousel-item active">
+        <div class="view" style="background-image: url('https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/8-col/img%282%29.jpg'); background-repeat: no-repeat; background-size: cover;">
+        </div>
+      </div>
+      <!--/First slide-->
+
+      <!--Second slide-->
+      <div class="carousel-item">
+        <div class="view" style="background-image: url('https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/8-col/img%283%29.jpg'); background-repeat: no-repeat; background-size: cover;">
+        </div>
+      </div>
+      <!--/Second slide-->
+
+      <!--Third slide-->
+      <div class="carousel-item">
+        <div class="view" style="background-image: url('https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/8-col/img%285%29.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+          <!-- Mask & flexbox options-->
+          <div class="mask rgba-black-strong d-flex justify-content-center align-items-center">
+        </div>
+      </div>
+      <!--/Third slide-->
+
+    </div>
+    <!--/.Slides-->
+
+    <!--Controls-->
+    <a class="carousel-control-prev" href="#carousel-example-1z" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carousel-example-1z" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+    <!--/.Controls-->
+
+  </div>
+  <!--/.Carousel Wrapper-->
+
+  <!--Main layout-->
+  <main>
+    <div class="container">
+
+      <!-- Section: Products v.1 -->
+      <section class="text-center my-5">
+        <!-- Grid row -->
+        <div class="row">          
+          
+          {% for product in data %}
+            <!-- Grid column -->
+            <div class="col-lg-3 col-md-6" style="margin-top: 30px;">
+              <!-- Card -->
+              <div class="card card-cascade narrower card-ecommerce">
+                <!-- Card image -->
+                <div class="view view-cascade overlay">
+                
+                  {% if not media %}
+                  <img src="{{ product.image }}" class="card-img-top" alt="sample photo">
+                  {% else %}
+                  <img src="{% get_media_prefix %}{{ product.image }}" class="card-img-top" alt="sample photo">
+                  {% endif %}
+                    
+                  <a href="{% url 'product' product.id %}">
+                    <div class="mask rgba-white-slight"></div>
+                  </a>
+                </div>
+                <!-- Card image -->
+                <!-- Card content -->
+                <div class="card-body card-body-cascade text-center">
+                  <!-- Category & Title -->
+                  <a href="" class="grey-text">
+                    <h5>{{ product.category }}</h5>
+                  </a>
+                  <h4 class="card-title">
+                    <strong>
+                      <a href="{% url 'product' product.id %}">{{ product.name }}</a>
+                    </strong>
+                  </h4>
+                  <p class="card-text">{{ product.description|truncatechars:20 }}
+                  </p>
+                  <!-- Card footer -->
+                  <div class="card-footer px-1">
+                    <span class="float-left font-weight-bold">
+                      <strong>{{ product.price }} tk</strong>
+                    </span>
+                    <span class="float-right">
+                      <a data-toggle="tooltip" data-placement="top" title="Add to Cart">
+                        <i class="fas fa-shopping-cart grey-text ml-3"></i>
+                      </a>
+                    </span>
+                  </div>
+                </div>
+                <!-- Card content -->
+              </div>
+              <!-- Card -->
+            </div>
+            <!-- Grid column -->
+          {% endfor %}
+          
+          
+          
+
+        </div>
+        <!-- Grid row -->
+
+      </section>
+      <!-- Section: Products v.1 -->
+
+      <!--Pagination-->
+      <nav class="d-flex justify-content-center wow fadeIn">
+        <ul class="pagination pg-blue">
+
+          <!--Arrow left-->
+          <li class="page-item disabled">
+            <a class="page-link" href="#" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+              <span class="sr-only">Previous</span>
+            </a>
+          </li>
+
+          <li class="page-item active">
+            <a class="page-link" href="#">1
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#">2</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#">3</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#">4</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#">5</a>
+          </li>
+
+          <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">Next</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!--Pagination-->
+
+    </div>
+  </main>
+  <!--Main layout-->
+{% endblock %}

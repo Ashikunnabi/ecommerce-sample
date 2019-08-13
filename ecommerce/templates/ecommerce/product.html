@@ -1,0 +1,98 @@
+{% extends 'ecommerce/_base.html' %}
+{% load static %}
+
+{% block content %}
+  <!--Main layout-->
+  <main class="mt-5 pt-4" style="min-height:800px">
+    <div class="container dark-grey-text mt-5" id="content">
+
+      <!--Grid row-->
+      <div class="row wow fadeIn">
+
+        <!--Grid column-->
+        <div class="col-md-6 mb-4">
+
+          <img src="" id="image" class="img-fluid" style="max-height:500px;" alt="">
+
+        </div>
+        <!--Grid column-->
+
+        <!--Grid column-->
+        <div class="col-md-6 mb-4">
+
+          <!--Content-->
+          <div class="p-4">
+
+            <div class="mb-3">
+              <a href="">
+                <span class="badge red mr-1" id="category">Category 2</span>
+              </a>
+            </div>            
+            <p class="lead font-weight-bold" id="name">Product Name</p>
+            <p class="lead">
+              <span><span id="price">$100</span> TK</span>
+            </p>
+
+            <p class="lead font-weight-bold">Description</p>
+            <p class="badge blue font-weight-bold p-2">Seller name: <span id="seller">ABCD</span></p>
+
+            <p id="description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Et dolor suscipit libero eos atque quia ipsa
+              sint voluptatibus!
+              Beatae sit assumenda asperiores iure at maxime atque repellendus maiores quia sapiente.</p>
+            
+            
+            <div class="chip chip-md"><span id="quantity">20</span> pcs in stock</div>
+
+
+            <form class="d-flex justify-content-left">
+              <!-- Default input -->
+              <input type="number" value="1" min="1" aria-label="Search" class="form-control" style="width: 100px">
+              <button class="btn btn-primary btn-md my-0 p" type="submit">Check out
+                <i class="fas fa-shopping-cart ml-1"></i>
+              </button>
+            </form>
+
+          </div>
+          <!--Content-->
+
+        </div>
+        <!--Grid column-->
+
+      </div>
+      <!--Grid row-->
+
+    </div>
+    
+    <div style="text-align: center;" id="error">
+      <h3 style="margin-top:50px;color: red;">Content not available</h3>
+    </div>
+  </main>
+  <!--Main layout-->
+
+
+{% endblock %}
+
+{% block extraJS %}
+<script type="text/javascript"> 
+  $(document).ready( function() {
+      $.ajax({
+       url : "{{url}}",
+       dataType: "json",
+       success : function (data) {
+                $("#error").hide(0);
+                $('#category').text(data.category);
+                $('#name').text(data.name);
+                $('#price').text(data.price);
+                $('#image').attr("src", data.image);
+                $('#seller').text( data.seller);
+                $('#description').text( data.description);
+                $('#quantity').text( data.quantity);
+              },
+        error: function (xhr, status) {
+             $("#content").hide();
+             $("#error").show();
+        },
+           });
+       });   
+</script>
+{% endblock %}

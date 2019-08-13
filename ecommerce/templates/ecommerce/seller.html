@@ -1,0 +1,315 @@
+{% extends 'ecommerce/_base.html' %}
+{% load static %}
+
+{% block content %}
+  <!--Main layout-->
+  <main class="mt-5 pt-4">
+    <div class="container wow fadeIn">
+      <!--Grid row-->
+      <div class="row">
+
+        <!--Grid column-->
+        <div class="col-md-12 mb-4">
+
+          <!--Card-->
+          <div class="card">
+
+            <!--Card content-->
+            <div class="card-body" style="min-height:800px"> 
+                      
+              <ul class="nav nav-tabs md-tabs" id="myTabMD" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" id="home-tab-md" data-toggle="tab" href="#home-md" role="tab" aria-controls="home-md"
+                    aria-selected="true">Personal information</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="products-tab-md" data-toggle="tab" href="#products-md" role="tab" aria-controls="products-md"
+                    aria-selected="false">Products</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="orders-tab-md" data-toggle="tab" href="#orders-md" role="tab" aria-controls="orders-md"
+                    aria-selected="false">Orders</a>
+                </li>
+              </ul>
+              <div class="tab-content card pt-5" id="myTabContentMD">
+                <div class="tab-pane fade show active" id="home-md" role="tabpanel" aria-labelledby="home-tab-md">
+
+                <!-- Personal Information -->
+                  <div id="personal-information">
+                      <!--Card content-->
+                      <div class="card-body px-lg-5 pt-0">
+                          <!-- Form -->
+                          <form  id="personal-info-update" class="text-center" style="color: #757575;" action="">
+                          {% csrf_token %}
+                              <div class="form-row">
+                                  <div class="col">
+                                      <!-- First name -->
+                                      <div class="md-form">
+                                          <input type="text" id="FirstName" name="first_name" class="form-control">
+                                          <label for="materialRegisterFormFirstName">First name</label>
+                                      </div>
+                                  </div>
+                                  <div class="col">
+                                      <!-- Last name -->
+                                      <div class="md-form">
+                                          <input type="text" id="LastName" name="last_name" class="form-control">
+                                          <label for="materialRegisterFormLastName">Last name</label>
+                                      </div>
+                                  </div>
+                              </div>
+                              <!-- E-mail -->
+                              <div class="md-form mt-0">
+                                  <input type="email" id="Email" name="email" class="form-control">
+                                  <label for="materialRegisterFormEmail">E-mail</label>
+                              </div>
+                              <!-- Password -->
+                              <div class="md-form">
+                                  <input type="password" id="Password" name="password" class="form-control" aria-describedby="materialRegisterFormPasswordHelpBlock">
+                                  <label for="materialRegisterFormPassword">Password</label>
+                              </div>
+                              <!-- Phone number -->
+                              <div class="md-form">
+                                  <input type="text" id="Phone" name="mobile_no" class="form-control" aria-describedby="materialRegisterFormPhoneHelpBlock">
+                                  <label for="materialRegisterFormPhone">Phone number</label>
+                              </div>
+                              <!-- Sign up button -->
+                              <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit">Save changes</button>
+                          </form>
+                          <!-- Form -->
+                      </div>
+                  </div>
+                  <!-- Material form register -->
+                  
+                </div>
+                <div class="tab-pane fade" id="products-md" role="tabpanel" aria-labelledby="products-tab-md">
+                  <div class="table-responsive">
+                    <table class="table" id="product-list-table">
+                      <!--Table head-->
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th class="th-lg">Name</th>
+                          <th class="th-lg">Quantity</th>
+                          <th class="th-lg">Unit price</th>
+                          <th class="th-lg">Action</th>
+                        </tr>
+                      </thead>
+                      <!--Table head-->
+                      <!--Table body-->
+                      <tbody> 
+                      </tbody>
+                      <!--Table body-->
+                    </table>
+                  </div> 
+                </div>
+                <div class="tab-pane fade" id="orders-md" role="tabpanel" aria-labelledby="orders-tab-md">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <!--Table head-->
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th class="th-lg">Name</th>
+                          <th class="th-lg">Quantity</th>
+                          <th class="th-lg">Unit price</th>
+                        </tr>
+                      </thead>
+                      <!--Table head-->
+                      <!--Table body-->
+                      <tbody>
+                        <tr>
+                          <th scope="row">1</th>
+                          <td>Lorem ipsum dolor</td>
+                          <td>Lorem ipsum dolor</td>
+                          <td>Lorem ipsum dolor</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">2</th>
+                          <td>Lorem ipsum dolor</td>
+                          <td>Lorem ipsum dolor</td>
+                          <td>Lorem ipsum dolor</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">3</th>
+                          <td>Lorem ipsum dolor</td>
+                          <td>Lorem ipsum dolor</td>
+                          <td>Lorem ipsum dolor</td>
+                        </tr>
+                        <tr>
+                          <th scope="row" colspan="2"></th>
+                          <th >Total price</th>
+                          <th>Lorem ipsum dolor</td>
+                        </tr>
+                      </tbody>
+                      <!--Table body-->
+                    </table>
+                  </div> 
+                </div>
+              
+              </div> 
+            </div>
+
+          </div>
+          <!--/.Card-->
+
+        </div>
+        <!--Grid column-->
+
+
+      </div>
+      <!--Grid row-->
+      
+      <!--Float fixed button and modal-->
+    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+      <a class="btn-floating btn-lg red" data-toggle="modal" data-target="#modalContactForm">
+        <i class="fas fa-plus"></i>
+      </a>
+    </div>
+    <div class="modal fade" id="modalContactForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+      
+        <form id="create-new-product" action="{% url 'add_product' %}" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="modal-content">
+            <div class="modal-header text-center">
+              <h4 class="modal-title w-100 font-weight-bold">Add New Product</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body mx-3">
+              <div class="md-form mb-5">
+                <input type="text" id="form34" name="name" class="form-control validate">
+                <label data-error="wrong" data-success="right" for="form34">Product name</label>
+              </div>
+
+              <div class="md-form mb-5">
+                <input type="number" id="form32" name="quantity" class="form-control validate">
+                <label data-error="wrong" data-success="right" for="form32">Available quantity</label>
+              </div>
+
+              <div class="md-form mb-5">
+                <input type="number" id="form32" name="price" class="form-control validate">
+                <label data-error="wrong" data-success="right" for="form32">Unit price</label>
+              </div>
+
+
+              <div class="md-form mb-5">
+                <textarea type="text" id="form8" name="description" class="md-textarea form-control" rows="4"></textarea>
+                <label data-error="wrong" data-success="right" for="form8">Description</label>
+              </div>
+              
+              <div class="md-form mb-5">                
+                 <select class="browser-default custom-select" name="category">
+                    <option value="" disabled selected>Choose category</option>
+                    {% for category in categories %}
+                      <option value="{{category.id}}">{{category}}</option>                  
+                    {% endfor %}
+                  </select>
+              </div>
+
+              <div class="md-form">
+                
+                    <input type="file" name="image">
+              </div>
+              
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+              <button type="submit" class="btn btn-unique">Add <i class="fas fa-paper-plane-o ml-1"></i></button>
+            </div>
+          </div>
+        </form>
+      
+      </div>
+    </div>
+
+        
+    </div>
+  </main>
+  <!--Main layout-->
+
+{% endblock %}
+
+{% block extraJS %}
+<script type="text/javascript">
+ 
+  // GET request for user profile
+  $(document).ready( function() { 
+      $.ajax({
+       url : "{{user_profile_url}}",
+       dataType: "json",
+       success : function (data) {
+                      console.log(data);
+                $('#FirstName').val( data.user.first_name);
+                $('#LastName').val( data.user.last_name);
+                $('#Email').val( data.user.email);
+                $('#Password').val( data.user.password);
+                $('#Phone').val( data.profile.mobile_no);
+              },
+           });
+       });   
+       
+
+  // POST request for user profile
+  $(document).ready( function() {
+      var $myForm = $('#personal-info-update') 
+      $myForm.submit(function(event){
+        event.preventDefault();
+        var $formData = $(this).serialize()
+        var $thisURL = "{{user_profile_url}}" || window.location.href // or set your own url
+        $.ajax({
+            method: "POST",
+            url: $thisURL,
+            data: $formData,
+            success: handleFormSuccess,
+            error: handleFormError,
+        })
+      
+      })
+      function handleFormSuccess(data, textStatus, jqXHR){
+          console.log(data)
+          console.log(textStatus)
+          console.log(jqXHR)
+      }
+      function handleFormError(jqXHR, textStatus, errorThrown){
+          console.log(jqXHR)
+          console.log(textStatus)
+          console.log(errorThrown)
+      }      
+  });
+       
+    
+  // Get request for Products   
+  $(document).ready( function() { 
+      $.ajax({
+       url : "{{products_url}}",
+       dataType: "json",
+       success : function (data) {
+                 console.log(data)
+                $.each( data, function( key, data ) {                               
+                  $("#product-list-table tbody").append(
+                        "<tr>" +
+                          "<td>"+ (parseInt(key)+1) +"</td>" +
+                          "<td>"+data.name+"</td>" +
+                          "<td>"+data.quantity+"</td>" +
+                          "<td>"+data.price+"</td>" +
+                          "<td>"+
+                            "<a href='http://127.0.0.1:8000/edit-product/"+data.id+"'><i class='far fa-edit'></i></a> "+ " | "+
+                            " <a href='http://127.0.0.1:8000/delete-product/"+data.id+"'><i class='far fa-trash-alt'></i></a>"+
+                            "</td>" +
+                        "</tr>"
+                    );
+                });                                 
+                $("#product-list-table tbody").append(
+                      "<tr>" +
+                        "<td scope='row' colspan='2'></td>" +
+                        "<th>"+'Total price'+"</th>" +
+                        "<th>"+'ghghghfhg'+"</th>" +
+                      "</tr>"
+                  );
+              },
+           });
+       });
+</script>
+{% endblock %}
+
