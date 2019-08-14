@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
-from ecommerce.models import Product, Profile
+from ecommerce.models import Cart, Order, Product, Profile
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -10,11 +10,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.renderers import TemplateHTMLRenderer
 from .serializers import (
-    AuthenticationSerializer, 
     ProductsSerializer, 
     ProductListSerializer,
     ProfileSerializer,
     UserSerializer,
+    OrderSerializer,
 )
 from rest_framework.generics import(
     ListAPIView,
@@ -155,7 +155,42 @@ class UserRegistrationAPIView(APIView):
         
         return Response(data=context, status=200, template_name="ecommerce/authentication.html")
 
+   
+    
+class BuyerOrderAPIView(APIView):
+    '''
+    Previous order view Buyer
+    '''
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request):
+        orders     = Order.objects.filter(user=request.user)        
+        serializer = OrderSerializer(orders, many=True).data
+        return Response(serializer) 
         
+    
+class BuyerOrderDetailAPIView(APIView):
+    '''
+    Previous order view Buyer
+    '''
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request, id):
+        orders     = Order.objects.filter(user=request.user, id=id)        
+        serializer = OrderSerializer(orders, many=True).data
+        return Response(serializer)  
+    
+    
+class SellerOrderAPIView(APIView):
+    '''
+    Seller order view
+    '''
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request):
+        orders     = Order.objects.filter(items__product__seller__user=request.user)
+        serializer = OrderSerializer(orders, many=True).data
+        return Response(serializer)
         
   
 

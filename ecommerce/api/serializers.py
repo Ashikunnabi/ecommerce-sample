@@ -1,19 +1,16 @@
 from django.contrib.auth.models import User 
 from ecommerce.models import(
+    Cart,
     Product,
     Profile,
+    Order,
 )
 from rest_framework.serializers import (
+    StringRelatedField,
     ModelSerializer,
     CharField,
 )  
      
-
-class AuthenticationSerializer(ModelSerializer):
-    class Meta:
-        model  = User
-        fields = '__all__'
-        
 
 class ProductsSerializer(ModelSerializer):
     category = CharField(source='get_category_name')
@@ -40,3 +37,25 @@ class UserSerializer(ModelSerializer):
     class Meta:
         model  = User
         fields = '__all__'
+
+
+        
+class CartSerializer(ModelSerializer):
+    product = ProductsSerializer()
+    name = CharField(source='__str__')
+
+    class Meta:
+        model  = Cart
+        fields = '__all__'  
+        
+        
+class OrderSerializer(ModelSerializer):
+    items = CartSerializer(many=True)
+
+    class Meta:
+        model  = Order
+        fields = '__all__'  
+        
+        
+        
+        

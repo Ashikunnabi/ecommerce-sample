@@ -3,7 +3,7 @@ from .models import Cart, Category, Profile
       
 def common_context(request):
     # Counting cart items
-    cart_items_count = Cart.objects.all().count
+    cart_items_count = Cart.objects.filter(ordered=False).count
     
     # Checking user's account_type for user dashboard
     account_type = None

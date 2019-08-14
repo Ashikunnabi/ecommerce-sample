@@ -7,9 +7,9 @@ from .viewsets import (
     ProductListAPIView, 
     ProfileAPIView, 
     SellerWiseProductsAPIView,
-    
-    
-    
+    BuyerOrderAPIView,
+    BuyerOrderDetailAPIView,
+    SellerOrderAPIView,
     UserRegistrationAPIView,
 )  
 
@@ -23,5 +23,8 @@ urlpatterns = [
     path('registration', UserRegistrationAPIView.as_view(), name="registration"),
     path('login', LoginAPIView.as_view(), name="login"),
     path('logout', LogoutAPIView.as_view(), name="logout"),
+    path('buyer-orders', BuyerOrderAPIView.as_view(), name="orders"),
+    path('buyer-orders/<int:id>', BuyerOrderDetailAPIView.as_view(), name="orders_details"),
+    path('seller-orders', SellerOrderAPIView.as_view(), name="orders"),
     path('', include(router.urls)),
 ]

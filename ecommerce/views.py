@@ -4,7 +4,7 @@ import requests
 
 from .api.end_point_base import end_point_base
 from .decorators import has_access
-from .models import Cart, Category, Product, Profile 
+from .models import Cart, Category, Order, Product, Profile 
 from .forms import ProductForm
 
 
@@ -66,13 +66,24 @@ def buyer(request):
     Buyer's dashboard 
     Authentication needed to see dashboard.
     '''
-    # Users personal information by api end-point
-    user_profile = '{}/user-profile?format=json'.format(end_point_base)
     
     context = {
-        'user_profile_url': user_profile,
+        'user_profile_url': '{}/user-profile?format=json'.format(end_point_base),
+        'orders_url': '{}/buyer-orders?format=json'.format(end_point_base),
     }
     return render(request, 'ecommerce/buyer.html', context)
+    
+    
+@login_required(login_url='authentication')   
+@has_access(['b'])
+def buyer_order_detail_view(request, id):
+    '''
+    Buyer's order history detail view 
+    '''    
+    context = {
+        'orders_url': '{}/buyer-orders/{}?format=json'.format(end_point_base, id),
+    }
+    return render(request, 'ecommerce/checkout_complete.html', context)
 
     
 @login_required(login_url='authentication')   
@@ -139,12 +150,10 @@ def seller_delete_product(request, id=None):
     product.delete()
     return redirect(seller)
     
-    
-@login_required(login_url='authentication')   
-@has_access(['b'])     
+         
 def checkout(request):
     total_price = 0
-    cart_items = Cart.objects.all()
+    cart_items = Cart.objects.filter(ordered=False)
     
     # Counting total price 
     for item in cart_items:
@@ -154,19 +163,84 @@ def checkout(request):
         'cart_items': cart_items,
         'total_price': total_price
     }
-    return render(request, 'ecommerce/checkout.html', context)
-    
+    return render(request, 'ecommerce/checkout.html', context)    
     
     
 def add_to_cart(request):
+    '''
+    Adding products/items into cart 
+    '''
     if request.method == "POST":
         id       = request.POST['product_id']
         quantity = request.POST['quantity']
+        increase = request.POST['increase_quantity']
+        decrease = request.POST['decrease_quantity']
         page_url = request.POST['path']
         
-        product = Cart.objects.create(product=Product.objects.get(id=id), quantity=quantity)
+        item     = Product.objects.get(id=id)
+        
+        # checking the item is already in cart
+        try:
+            item_in_cart = Cart.objects.get(product=item, ordered=False)
+        except:
+            item_in_cart = False
+        if item_in_cart:
+            if increase == "True":
+                increase_quantity(item, quantity) 
+            if decrease == "True":
+                decrease_quantity(item) 
+        else:
+            Cart.objects.create(product=item, quantity=quantity)
     
-    return redirect(page_url)
+    return redirect(page_url)   
+    
+    
+def increase_quantity(item, quantity):        
+    available_item = Cart.objects.get(product=item, ordered=False)
+    if quantity is not '':
+        available_item.quantity += int(quantity)
+    else:
+        available_item.quantity += 1
+    available_item.save()   
+    
+    
+def decrease_quantity(item):        
+    available_item = Cart.objects.get(product=item, ordered=False)
+    if available_item.quantity == 1:
+        available_item.delete()
+    else:
+       available_item.quantity -= 1
+       available_item.save()
+    
+
+@login_required(login_url='authentication')   
+@has_access(['b'])    
+def order(request):
+    if request.method == "POST": 
+        total_price = 0     
+        cart_items = Cart.objects.filter(ordered=False)
+        # Counting total price 
+        for item in cart_items:
+            total_price += int(item.total_price())
+            
+        order = Order.objects.create(
+            user = request.user,
+            total = total_price
+        )
+        order.items.set(cart_items)
+        
+        # Making the car item ordered = True 
+        for cart_item in Cart.objects.filter(ordered=False):
+            cart_item.ordered=True
+            cart_item.save()
+        
+        context = {
+            'message': "Order Placed Successfully.",
+            'user_profile_url': '{}/user-profile?format=json'.format(end_point_base),
+        }
+        return render(request, 'ecommerce/buyer.html', context)
+    else:
+        return redirect(checkout)
     
     
     

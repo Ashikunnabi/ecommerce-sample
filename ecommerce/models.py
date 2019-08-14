@@ -42,8 +42,9 @@ class Product(models.Model):
     
 
 class Cart(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product  = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
+    ordered  = models.BooleanField(default=False)
     
     def __str__(self):
         return self.product.name
@@ -53,4 +54,10 @@ class Cart(models.Model):
         
     
 class Order(models.Model):
-    pass
+    user       = models.ForeignKey(User, on_delete=models.CASCADE)
+    items      = models.ManyToManyField(Cart)
+    total      = models.PositiveIntegerField(default=0)
+    order_date = models.DateTimeField(auto_now_add=True)
+    
+    
+    
