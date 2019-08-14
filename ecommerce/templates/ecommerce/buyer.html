@@ -29,11 +29,53 @@
               </ul>
               <div class="tab-content card pt-5" id="myTabContentMD">
                 <div class="tab-pane fade show active" id="home-md" role="tabpanel" aria-labelledby="home-tab-md">
-                  <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua,
-                    retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica.
-                    Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry
-                    richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american
-                    apparel, butcher voluptate nisi qui.</p>
+
+                <!-- Personal Information -->
+                  <div id="personal-information">
+                      <!--Card content-->
+                      <div class="card-body px-lg-5 pt-0">
+                          <!-- Form -->
+                          <form  id="personal-info-update" class="text-center" style="color: #757575;" action="">
+                          {% csrf_token %}
+                              <div class="form-row">
+                                  <div class="col">
+                                      <!-- First name -->
+                                      <div class="md-form">
+                                          <input type="text" id="FirstName" name="first_name" class="form-control">
+                                          <label for="materialRegisterFormFirstName">First name</label>
+                                      </div>
+                                  </div>
+                                  <div class="col">
+                                      <!-- Last name -->
+                                      <div class="md-form">
+                                          <input type="text" id="LastName" name="last_name" class="form-control">
+                                          <label for="materialRegisterFormLastName">Last name</label>
+                                      </div>
+                                  </div>
+                              </div>
+                              <!-- E-mail -->
+                              <div class="md-form mt-0">
+                                  <input type="email" id="Email" name="email" class="form-control">
+                                  <label for="materialRegisterFormEmail">E-mail</label>
+                              </div>
+                              <!-- Password -->
+                              <div class="md-form">
+                                  <input type="password" id="Password" name="password" class="form-control" aria-describedby="materialRegisterFormPasswordHelpBlock">
+                                  <label for="materialRegisterFormPassword">Password</label>
+                              </div>
+                              <!-- Phone number -->
+                              <div class="md-form">
+                                  <input type="text" id="Phone" name="mobile_no" class="form-control" aria-describedby="materialRegisterFormPhoneHelpBlock">
+                                  <label for="materialRegisterFormPhone">Phone number</label>
+                              </div>
+                              <!-- Sign up button -->
+                              <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit">Save changes</button>
+                          </form>
+                          <!-- Form -->
+                      </div>
+                  </div>
+                  <!-- Material form register -->
+                  
                 </div>
                 <div class="tab-pane fade" id="orders-md" role="tabpanel" aria-labelledby="orders-tab-md">
                   <div class="table-responsive">
@@ -94,3 +136,54 @@
     </div>
   </main>
 {% endblock %}
+
+{% block extraJS %}
+<script type="text/javascript">
+ 
+  // GET request for user profile
+  $(document).ready( function() { 
+      $.ajax({
+       url : "{{user_profile_url}}",
+       dataType: "json",
+       success : function (data) {
+                      console.log(data);
+                $('#FirstName').val( data.user.first_name);
+                $('#LastName').val( data.user.last_name);
+                $('#Email').val( data.user.email);
+                $('#Phone').val( data.profile.mobile_no);
+              },
+           });
+       });   
+       
+
+  // POST request for user profile
+  $(document).ready( function() {
+      var $myForm = $('#personal-info-update') 
+      $myForm.submit(function(event){
+        event.preventDefault();
+        var $formData = $(this).serialize()
+        var $thisURL = "{{user_profile_url}}" || window.location.href // or set your own url
+        $.ajax({
+            method: "POST",
+            url: $thisURL,
+            data: $formData,
+            success: handleFormSuccess,
+            error: handleFormError,
+        })
+      
+      })
+      function handleFormSuccess(data, textStatus, jqXHR){
+          console.log(data)
+          console.log(textStatus)
+          console.log(jqXHR)
+      }
+      function handleFormError(jqXHR, textStatus, errorThrown){
+          console.log(jqXHR)
+          console.log(textStatus)
+          console.log(errorThrown)
+      }      
+  });
+       
+</script>
+{% endblock %}
+

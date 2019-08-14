@@ -67,6 +67,7 @@
         <div class="row">          
           
           {% for product in data %}
+          
             <!-- Grid column -->
             <div class="col-lg-3 col-md-6" style="margin-top: 30px;">
               <!-- Card -->
@@ -102,12 +103,23 @@
                   <div class="card-footer px-1">
                     <span class="float-left font-weight-bold">
                       <strong>{{ product.price }} tk</strong>
-                    </span>
-                    <span class="float-right">
-                      <a data-toggle="tooltip" data-placement="top" title="Add to Cart">
-                        <i class="fas fa-shopping-cart grey-text ml-3"></i>
-                      </a>
-                    </span>
+                    </span>                    
+                    {% if account_type == 's' %}                     
+                    {% else %}
+                      <span class="float-right">
+                        <form action="{% url 'add_to_cart' %}" method="post">
+                          {% csrf_token %}
+                          <input type="text" name="product_id" value="{{product.id}}" hidden>
+                          <input type="text" name="quantity" value="1" hidden>
+                          <input type="text" name="path" value="{{request.path}}" hidden>
+                          <button type="submit" data-toggle="tooltip" data-placement="top" title="Add to Cart">
+                            <i class="fas fa-shopping-cart grey-text ml-3"></i>
+                          </button>
+                        </form>
+                        
+                      </span>
+                    {% endif %}
+                    
                   </div>
                 </div>
                 <!-- Card content -->

@@ -21,14 +21,6 @@ class Category(models.Model):
     def __str__(self):
         return self.name
     
-
-class Cart(models.Model):
-    pass
-    
-    
-class Order(models.Model):
-    pass
-    
     
 class Product(models.Model):
     name        = models.CharField(max_length=50)
@@ -47,3 +39,18 @@ class Product(models.Model):
         
     def get_seller_name(self):
         return self.seller.user.username
+    
+
+class Cart(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    
+    def __str__(self):
+        return self.product.name
+    
+    def total_price(self):
+        return (self.product.price * self.quantity)
+        
+    
+class Order(models.Model):
+    pass

@@ -59,18 +59,42 @@
 
       <!-- Right -->
       <ul class="navbar-nav nav-flex-icons">
-        <li class="nav-item">
-          <a class="nav-link waves-effect" href="{% url 'checkout' %}">
-            <span class="badge red z-depth-1 mr-1"> 1 </span>
-            <i class="fas fa-shopping-cart"></i>
-            <span class="clearfix d-none d-sm-inline-block"> Cart </span>
-          </a>
-        </li>          
-        <li class="nav-item">
-          <a href="{% url 'authentication' %}" id="navbar-static-login" class="btn btn-info btn-rounded btn-sm waves-effect waves-light">Log In
-            <i class="fas fa-sign-in-alt ml-2"></i>
-          </a>
-        </li>
+        {% if account_type %} 
+          {% if account_type == "b" %}
+            <li class="nav-item">
+              <a class="nav-link waves-effect" href="{% url 'checkout' %}">
+                <span class="badge red z-depth-1 mr-1">{{cart_items_count}} </span>
+                <i class="fas fa-shopping-cart"></i>
+                <span class="clearfix d-none d-sm-inline-block"> Cart </span>
+              </a>
+            </li>             
+            <li class="nav-item">
+              <a class="nav-link waves-effect" href="{% url 'buyer' %}">
+                <i class="fas fa-tachometer-alt"></i>
+                <span class="clearfix d-none d-sm-inline-block"> Dashboard </span>
+              </a>
+            </li>        
+          {% else %}         
+            <li class="nav-item">
+              <a class="nav-link waves-effect" href="{% url 'seller' %}">
+                <i class="fas fa-tachometer-alt"></i>
+                <span class="clearfix d-none d-sm-inline-block"> Dashboard </span>
+              </a>
+            </li>
+          {% endif %}           
+          <li class="nav-item">
+            <a href="{% url 'logout' %}" id="navbar-static-login" class="btn btn-info btn-rounded btn-sm waves-effect waves-light">Log out
+              <i class="fas fa-sign-in-alt ml-2"></i>
+            </a>
+          </li>        
+        {% else %}
+          <li class="nav-item">
+            <a href="{% url 'authentication' %}" id="navbar-static-login" class="btn btn-info btn-rounded btn-sm waves-effect waves-light">Sign in/Sign up
+              <i class="fas fa-sign-in-alt ml-2"></i>
+            </a>
+          </li>        
+        {% endif %}        
+        
       </ul>
 
     </div>

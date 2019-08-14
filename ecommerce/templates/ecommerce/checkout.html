@@ -32,34 +32,26 @@
         <th class="th-lg">Name</th>
         <th class="th-lg">Quantity</th>
         <th class="th-lg">Unit price</th>
+        <th class="th-lg">Total price</th>
       </tr>
     </thead>
     <!--Table head-->
 
     <!--Table body-->
     <tbody>
+    {% for item in cart_items %}
       <tr>
-        <th scope="row">1</th>
-        <td>Lorem ipsum dolor</td>
-        <td>Lorem ipsum dolor</td>
-        <td>Lorem ipsum dolor</td>
+        <th scope="row">{{ forloop.counter }}</th>
+        <td>{{item.product.name}}</td>
+        <td>{{item.quantity}}</td>
+        <td>{{item.product.price}}</td>
+        <td>{{item.total_price}}</td>
       </tr>
+    {% endfor %}
       <tr>
-        <th scope="row">2</th>
-        <td>Lorem ipsum dolor</td>
-        <td>Lorem ipsum dolor</td>
-        <td>Lorem ipsum dolor</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td>Lorem ipsum dolor</td>
-        <td>Lorem ipsum dolor</td>
-        <td>Lorem ipsum dolor</td>
-      </tr>
-      <tr>
-        <th scope="row" colspan="2"></th>
+        <th scope="row" colspan="3"></th>
         <th >Total price</th>
-        <th>Lorem ipsum dolor</td>
+        <th>{{total_price}}</td>
       </tr>
     </tbody>
     <!--Table body-->

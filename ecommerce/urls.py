@@ -1,6 +1,7 @@
 from django.urls import include, path
 from .views import (
     authentication,
+    add_to_cart,
     buyer,
     category_wise_view,
     checkout,
@@ -16,6 +17,7 @@ from .views import (
 urlpatterns = [
     path('authentication/',authentication, name='authentication'),
     path('buyer/', buyer, name='buyer'),
+    path('add-to-cart/', add_to_cart, name='add_to_cart'),
     path('category-wise/<int:id>', category_wise_view, name='category_wise_view'),
     path('checkout/', checkout, name='checkout'),
     path('',index, name='index'),

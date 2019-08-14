@@ -11,7 +11,7 @@ from rest_framework.serializers import (
 
 class AuthenticationSerializer(ModelSerializer):
     class Meta:
-        model  = Profile
+        model  = User
         fields = '__all__'
         
 

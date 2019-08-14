@@ -42,11 +42,15 @@
             
             
             <div class="chip chip-md"><span id="quantity">20</span> pcs in stock</div>
+            
+            
 
-
-            <form class="d-flex justify-content-left">
+            <form action="{% url 'add_to_cart' %}" method="post" class="d-flex justify-content-left">
+              {% csrf_token %}
               <!-- Default input -->
-              <input type="number" value="1" min="1" aria-label="Search" class="form-control" style="width: 100px">
+              <input type="text" id="product_id" name="product_id" hidden>
+              <input type="number" value="1" name="quantity" min="1" aria-label="Search" class="form-control" style="width: 100px">
+              <input type="text" name="path" value="{{request.path}}" hidden>
               <button class="btn btn-primary btn-md my-0 p" type="submit">Check out
                 <i class="fas fa-shopping-cart ml-1"></i>
               </button>
@@ -79,7 +83,9 @@
        url : "{{url}}",
        dataType: "json",
        success : function (data) {
+                console.log(data)
                 $("#error").hide(0);
+                $('#product_id').val(data.id);
                 $('#category').text(data.category);
                 $('#name').text(data.name);
                 $('#price').text(data.price);

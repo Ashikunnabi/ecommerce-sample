@@ -1,11 +1,17 @@
-from django.db import connection
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 import requests
+
 from .api.end_point_base import end_point_base
-from .models import Category, Product, Profile 
+from .decorators import has_access
+from .models import Cart, Category, Product, Profile 
 from .forms import ProductForm
 
-def authentication(request):
+
+def authentication(request, *args, **kwargs):
+    '''
+    User registration and authentication both are done by api
+    '''
     return render(request, 'ecommerce/authentication.html')
 
     
@@ -33,8 +39,9 @@ def index(request):
     response  = requests.get('{}/?format=json'.format(end_point_base))
     # Converting response as JSON format
     json_data = response.json()
+    
     context = {
-        'data': json_data,
+        'data'        : json_data,
     }
     return render(request, 'ecommerce/index.html', context)
     
@@ -52,14 +59,33 @@ def product(request, id):
     return render(request, 'ecommerce/product.html', context)
     
     
+@login_required(login_url='authentication')   
+@has_access(['b'])
 def buyer(request):
-    return render(request, 'ecommerce/buyer.html')
+    '''
+    Buyer's dashboard 
+    Authentication needed to see dashboard.
+    '''
+    # Users personal information by api end-point
+    user_profile = '{}/user-profile?format=json'.format(end_point_base)
     
+    context = {
+        'user_profile_url': user_profile,
+    }
+    return render(request, 'ecommerce/buyer.html', context)
+
     
+@login_required(login_url='authentication')   
+@has_access(['s'])   
 def seller(request, id=None):
+    '''
+    Seller's dashboard 
+    Authentication needed to see dashboard.
+    '''
+    # Users personal information by api end-point
     user_profile = '{}/user-profile?format=json'.format(end_point_base)
     if request.method == 'GET':
-        products     = '{}/seller?format=json'.format(end_point_base)
+        products = '{}/seller?format=json'.format(end_point_base)
     else:
         products = '{}/seller/{}?format=json'.format(end_point_base, id)
     context = {
@@ -69,12 +95,14 @@ def seller(request, id=None):
     return render(request, 'ecommerce/seller.html', context)
     
     
+@login_required(login_url='authentication')   
+@has_access(['s'])      
 def seller_add_product(request):
     if request.method == "POST":
         post_form = ProductForm(request.POST, request.FILES)
         if post_form.is_valid():
-            obj = post_form.save(commit=False)
-            obj.seller = Profile.objects.get(user=request.user)
+            obj          = post_form.save(commit=False)
+            obj.seller   = Profile.objects.get(user=request.user)
             obj.category = Category.objects.get(id=request.POST['category'])
             obj.save()
         else:
@@ -82,6 +110,8 @@ def seller_add_product(request):
     return redirect(seller)
     
     
+@login_required(login_url='authentication')   
+@has_access(['s'])     
 def seller_edit_product(request, id=None):
     if request.method == "GET":
         product = Product.objects.get(id=id)
@@ -91,25 +121,52 @@ def seller_edit_product(request, id=None):
         return render(request, 'ecommerce/product_edit.html',context)
         
     if request.method == "POST":
-        product = Product.objects.get(id=id)
+        product   = Product.objects.get(id=id)
         post_form = ProductForm(request.POST, request.FILES, instance=product)
         if post_form.is_valid():
-            obj = post_form.save(commit=False)
+            obj          = post_form.save(commit=False)
             obj.category = Category.objects.get(id=request.POST['category'])
             obj.save()
         else:
             print(post_form.errors)    
     return redirect(seller)
-    
-    
+ 
+ 
+@login_required(login_url='authentication')   
+@has_access(['s'])  
 def seller_delete_product(request, id=None):
     product = Product.objects.get(id=id)
     product.delete()
     return redirect(seller)
     
     
+@login_required(login_url='authentication')   
+@has_access(['b'])     
 def checkout(request):
-    return render(request, 'ecommerce/checkout.html')
+    total_price = 0
+    cart_items = Cart.objects.all()
+    
+    # Counting total price 
+    for item in cart_items:
+        total_price += int(item.total_price())
+        
+    context = {
+        'cart_items': cart_items,
+        'total_price': total_price
+    }
+    return render(request, 'ecommerce/checkout.html', context)
+    
+    
+    
+def add_to_cart(request):
+    if request.method == "POST":
+        id       = request.POST['product_id']
+        quantity = request.POST['quantity']
+        page_url = request.POST['path']
+        
+        product = Cart.objects.create(product=Product.objects.get(id=id), quantity=quantity)
+    
+    return redirect(page_url)
     
     
     
