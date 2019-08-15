@@ -78,6 +78,7 @@
                           <!-- Form -->
                       </div>
                   </div>
+                  <a id="after-reset" href="{% url 'authentication' %}" class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit">Change saved. Login again.</a>
                   <!-- Material form register -->
                   
                 </div>
@@ -229,6 +230,7 @@
 
   // POST request for user profile
   $(document).ready( function() {
+      $('#after-reset').hide();
       var $myForm = $('#personal-info-update') 
       $myForm.submit(function(event){
         event.preventDefault();
@@ -244,6 +246,8 @@
       
       })
       function handleFormSuccess(data, textStatus, jqXHR){
+          $('#personal-info-update').hide();
+          $('#after-reset').show();
           console.log(data)
           console.log(textStatus)
           console.log(jqXHR)

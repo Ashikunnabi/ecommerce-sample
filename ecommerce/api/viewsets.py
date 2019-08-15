@@ -95,7 +95,7 @@ class ProductListAPIView(ListAPIView):
     
 class ProfileAPIView(APIView):
     '''
-    User profile 
+    User profile view and edit
     '''
     permission_classes = [IsAuthenticated]
     
@@ -108,6 +108,25 @@ class ProfileAPIView(APIView):
             'user'   : u_serializer,
             'profile': p_serializer
         })
+    
+    
+    def post(self, request):
+        data = request.data
+        
+        try: 
+            profile = Profile.objects.get(user__id=request.user.id)
+            profile.mobile_no = data['mobile_no']
+            profile.save()
+            user = User.objects.get(id=request.user.id)
+            user.first_name = data['first_name']
+            user.last_name  = data['last_name']
+            user.email      = data['email']
+            user.set_password(data['password'])
+            user.save()
+            
+            return Response(status=200)
+        except:
+            return Response(status=400)
     
     
 class SellerWiseProductsAPIView(APIView):
