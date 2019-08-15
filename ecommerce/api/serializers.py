@@ -9,12 +9,19 @@ from rest_framework.serializers import (
     StringRelatedField,
     ModelSerializer,
     CharField,
-)  
+)       
+     
+
+class UserSerializer(ModelSerializer):
+    class Meta:
+        model  = User
+        fields = '__all__'
      
 
 class ProductsSerializer(ModelSerializer):
     category = CharField(source='get_category_name')
     seller   = CharField(source='get_seller_name')
+    
     class Meta:
         model  = Product
         fields = '__all__'
@@ -23,26 +30,20 @@ class ProductsSerializer(ModelSerializer):
 class ProductListSerializer(ModelSerializer):
     category = CharField(source='get_category_name')
     class Meta:
-        model = Product
+        model  = Product
         fields = ['id', 'name', 'category', 'description', 'price', 'image']        
      
 
 class ProfileSerializer(ModelSerializer):
     class Meta:
         model  = Profile
-        fields = '__all__'       
-     
-
-class UserSerializer(ModelSerializer):
-    class Meta:
-        model  = User
-        fields = '__all__'
+        fields = '__all__'  
 
 
         
 class CartSerializer(ModelSerializer):
     product = ProductsSerializer()
-    name = CharField(source='__str__')
+    name    = CharField(source='__str__')
 
     class Meta:
         model  = Cart

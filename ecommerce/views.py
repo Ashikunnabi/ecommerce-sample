@@ -4,11 +4,17 @@ import requests
 
 from .api.end_point_base import end_point_base
 from .decorators import has_access
-from .models import Cart, Category, Order, Product, Profile 
 from .forms import ProductForm
+from .models import (
+    Cart, 
+    Category, 
+    Order, 
+    Product, 
+    Profile 
+)
 
 
-def authentication(request, *args, **kwargs):
+def authentication(request):
     '''
     User registration and authentication both are done by api
     '''
@@ -36,12 +42,11 @@ def index(request):
     'requests' module helps to hit the API end-point.
     '''
     # API call
-    response  = requests.get('{}/?format=json'.format(end_point_base))
-    # Converting response as JSON format
-    json_data = response.json()
+    response  = requests.get('{}/?format=json'.format(end_point_base))    
+    json_data = response.json()   # Converting response as JSON format   
     
     context = {
-        'data'        : json_data,
+        'data': json_data,
     }
     return render(request, 'ecommerce/index.html', context)
     
@@ -65,11 +70,10 @@ def buyer(request):
     '''
     Buyer's dashboard 
     Authentication needed to see dashboard.
-    '''
-    
+    '''    
     context = {
         'user_profile_url': '{}/user-profile?format=json'.format(end_point_base),
-        'orders_url': '{}/buyer-orders?format=json'.format(end_point_base),
+        'orders_url'      : '{}/buyer-orders?format=json'.format(end_point_base),
     }
     return render(request, 'ecommerce/buyer.html', context)
     
@@ -83,25 +87,23 @@ def buyer_order_detail_view(request, id):
     context = {
         'orders_url': '{}/buyer-orders/{}?format=json'.format(end_point_base, id),
     }
-    return render(request, 'ecommerce/checkout_complete.html', context)
+    return render(request, 'ecommerce/buyer_order_details.html', context)
 
-    
+
 @login_required(login_url='authentication')   
 @has_access(['s'])   
-def seller(request, id=None):
+def seller(request):
     '''
     Seller's dashboard 
     Authentication needed to see dashboard.
     '''
     # Users personal information by api end-point
     user_profile = '{}/user-profile?format=json'.format(end_point_base)
-    if request.method == 'GET':
-        products = '{}/seller?format=json'.format(end_point_base)
-    else:
-        products = '{}/seller/{}?format=json'.format(end_point_base, id)
+    products = '{}/seller?format=json'.format(end_point_base)
     context = {
         'products_url'    : products,
         'user_profile_url': user_profile,
+        'orders_url'      : '{}/seller-orders?format=json'.format(end_point_base),
     }
     return render(request, 'ecommerce/seller.html', context)
     
@@ -150,6 +152,18 @@ def seller_delete_product(request, id=None):
     product.delete()
     return redirect(seller)
     
+    
+@login_required(login_url='authentication')   
+@has_access(['s'])
+def seller_order_detail_view(request, id):
+    '''
+    Buyer's order history detail view 
+    '''    
+    context = {
+        'orders_url': '{}/seller-orders/{}?format=json'.format(end_point_base, id),
+    }
+    return render(request, 'ecommerce/seller_order_details.html', context)
+    
          
 def checkout(request):
     total_price = 0
@@ -160,7 +174,7 @@ def checkout(request):
         total_price += int(item.total_price())
         
     context = {
-        'cart_items': cart_items,
+        'cart_items' : cart_items,
         'total_price': total_price
     }
     return render(request, 'ecommerce/checkout.html', context)    
@@ -224,7 +238,7 @@ def order(request):
             total_price += int(item.total_price())
             
         order = Order.objects.create(
-            user = request.user,
+            user  = request.user,
             total = total_price
         )
         order.items.set(cart_items)
@@ -235,7 +249,7 @@ def order(request):
             cart_item.save()
         
         context = {
-            'message': "Order Placed Successfully.",
+            'message'         : "Order Placed Successfully.",
             'user_profile_url': '{}/user-profile?format=json'.format(end_point_base),
         }
         return render(request, 'ecommerce/buyer.html', context)

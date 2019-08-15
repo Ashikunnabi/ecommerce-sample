@@ -10,11 +10,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.renderers import TemplateHTMLRenderer
 from .serializers import (
+    OrderSerializer,
     ProductsSerializer, 
     ProductListSerializer,
     ProfileSerializer,
     UserSerializer,
-    OrderSerializer,
 )
 from rest_framework.generics import(
     ListAPIView,
@@ -28,10 +28,10 @@ from rest_framework.viewsets import(
 class LoginAPIView(APIView):
     renderer_classes = [TemplateHTMLRenderer]
     def post(self, request):        
-        data = request.data
+        data     = request.data
         username = data['username']
         password = data['password']
-        user = authenticate(request, username=username, password=password)
+        user     = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
             return redirect('index')
@@ -55,19 +55,19 @@ class UserRegistrationAPIView(APIView):
         data = request.data
         try:
             # creating new user
-            password = data['password']
-            user = User()
-            user.username = data['username']
+            password        = data['password']
+            user            = User()
+            user.username   = data['username']
             user.first_name = data['first_name']
-            user.last_name = data['last_name']
-            user.email = data['email']
+            user.last_name  = data['last_name']
+            user.email      = data['email']
             user.set_password(password)
             user.save()
             # creating user profile
-            profile = Profile()
-            profile.mobile_no = data['mobile_no']
+            profile              = Profile()
+            profile.mobile_no    = data['mobile_no']
             profile.account_type = data['account_type']
-            profile.user = user
+            profile.user         = user
             profile.save()
             
             context = {
@@ -121,39 +121,6 @@ class SellerWiseProductsAPIView(APIView):
         products = Product.objects.filter(seller__user__id=request.user.id)
         serializer = ProductsSerializer(products, many=True).data
         return Response(serializer)
-    
- 
-class UserRegistrationAPIView(APIView):
-    renderer_classes = [TemplateHTMLRenderer]
-           
-    def post(self, request):        
-        data = request.data
-        try:
-            # creating new user
-            password = data['password']
-            user = User()
-            user.username = data['username']
-            user.first_name = data['first_name']
-            user.last_name = data['last_name']
-            user.email = data['email']
-            user.set_password(password)
-            user.save()
-            # creating user profile
-            profile = Profile()
-            profile.mobile_no = data['mobile_no']
-            profile.account_type = data['account_type']
-            profile.user = user
-            profile.save()
-            
-            context = {
-             'message': 'Successfully registered.'
-            }
-        except:
-            context = {
-             'message': 'Registration failed.'
-            }
-        
-        return Response(data=context, status=200, template_name="ecommerce/authentication.html")
 
    
     
@@ -191,6 +158,18 @@ class SellerOrderAPIView(APIView):
         orders     = Order.objects.filter(items__product__seller__user=request.user)
         serializer = OrderSerializer(orders, many=True).data
         return Response(serializer)
+        
+    
+class SellerOrderDetailAPIView(APIView):
+    '''
+    Previous order view seller
+    '''
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request, id):
+        orders     = Order.objects.filter(id=id)        
+        serializer = OrderSerializer(orders, many=True).data
+        return Response(serializer)  
         
   
 

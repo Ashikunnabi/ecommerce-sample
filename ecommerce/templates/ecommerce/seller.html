@@ -39,7 +39,7 @@
                       <!--Card content-->
                       <div class="card-body px-lg-5 pt-0">
                           <!-- Form -->
-                          <form  id="personal-info-update" class="text-center" style="color: #757575;" action="">
+                          <form  id="personal-info-update" class="text-center" style="color: #757575;" >
                           {% csrf_token %}
                               <div class="form-row">
                                   <div class="col">
@@ -102,44 +102,23 @@
                     </table>
                   </div> 
                 </div>
+                
                 <div class="tab-pane fade" id="orders-md" role="tabpanel" aria-labelledby="orders-tab-md">
                   <div class="table-responsive">
-                    <table class="table">
+                    <table class="table" id="order-list-table">
                       <!--Table head-->
                       <thead>
                         <tr>
                           <th>#</th>
-                          <th class="th-lg">Name</th>
-                          <th class="th-lg">Quantity</th>
-                          <th class="th-lg">Unit price</th>
+                          <th class="th-lg">Invoice</th>
+                          <th class="th-lg">Date</th>
+                          <th class="th-lg">Details</th>
                         </tr>
                       </thead>
                       <!--Table head-->
                       <!--Table body-->
                       <tbody>
-                        <tr>
-                          <th scope="row">1</th>
-                          <td>Lorem ipsum dolor</td>
-                          <td>Lorem ipsum dolor</td>
-                          <td>Lorem ipsum dolor</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">2</th>
-                          <td>Lorem ipsum dolor</td>
-                          <td>Lorem ipsum dolor</td>
-                          <td>Lorem ipsum dolor</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">3</th>
-                          <td>Lorem ipsum dolor</td>
-                          <td>Lorem ipsum dolor</td>
-                          <td>Lorem ipsum dolor</td>
-                        </tr>
-                        <tr>
-                          <th scope="row" colspan="2"></th>
-                          <th >Total price</th>
-                          <th>Lorem ipsum dolor</td>
-                        </tr>
+                        
                       </tbody>
                       <!--Table body-->
                     </table>
@@ -239,7 +218,6 @@
        url : "{{user_profile_url}}",
        dataType: "json",
        success : function (data) {
-                      console.log(data);
                 $('#FirstName').val( data.user.first_name);
                 $('#LastName').val( data.user.last_name);
                 $('#Email').val( data.user.email);
@@ -284,7 +262,6 @@
        url : "{{products_url}}",
        dataType: "json",
        success : function (data) {
-                 console.log(data)
                 $.each( data, function( key, data ) {                               
                   $("#product-list-table tbody").append(
                         "<tr>" +
@@ -302,6 +279,32 @@
               },
            });
        });
+
+  // Get request for orders   
+  $(document).ready( function() { 
+      $.ajax({
+       url : "{{orders_url}}",
+       dataType: "json",
+       success : function (data) {
+                $.each( data, function( key, data ) {  
+                  $("#order-list-table tbody").append(
+                        "<tr>" +
+                          "<td>"+ (parseInt(key)+1) +"</td>" +
+                          "<td>ECIV458963"+data.id+"</td>" +
+                          "<td>"+new Date(data.order_date)+"</td>" +
+                          "<td>"+
+                            "<a href='http://127.0.0.1:8000/seller-order/"+data.id+"'><i class='far fa-eye'></i></a> "+                                      
+                          "</td>" + 
+                        "</tr>"                         
+                    );
+                }); 
+              },
+           });
+       });
+// Tooltips Initialization
+$(function () {
+$('[data-toggle="tooltip"]').tooltip()
+})       
 </script>
 {% endblock %}
 
