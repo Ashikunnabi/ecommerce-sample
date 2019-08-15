@@ -251,6 +251,7 @@ def order(request):
         context = {
             'message'         : "Order Placed Successfully.",
             'user_profile_url': '{}/user-profile?format=json'.format(end_point_base),
+            'orders_url'      : '{}/buyer-orders?format=json'.format(end_point_base),
         }
         return render(request, 'ecommerce/buyer.html', context)
     else:
